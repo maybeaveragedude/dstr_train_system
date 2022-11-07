@@ -150,10 +150,10 @@ void PaymentList::getPaymentDetails(PaymentNode *pHead, string role, string id)
         cout << left << setw(30) << "Last Name : " << curr->l_name << endl;
         cout << left << setw(30) << "Identification Number : " << curr->ic_no << endl;
         cout << left << setw(30) << "Last Name : " << curr->l_name << endl;
-        cout << left << setw(30) << "Start Station ID : " << curr->departure_stn_id << endl;
-        cout << left << setw(30) << "Start Station Name : " << curr->departure_stn_name << endl;
-        cout << left << setw(30) << "End Station ID : " << curr->destination_stn_id << endl;
-        cout << left << setw(30) << "End Station Name : " << curr->destination_stn_name << endl;
+        cout << left << setw(30) << "Departure Station ID : " << curr->departure_stn_id << endl;
+        cout << left << setw(30) << "Departure Station Name : " << curr->departure_stn_name << endl;
+        cout << left << setw(30) << "Destination Station ID : " << curr->destination_stn_id << endl;
+        cout << left << setw(30) << "Destination Station Name : " << curr->destination_stn_name << endl;
         cout << left << setw(30) << "Estimated Travel Duration : " << curr->total_duration << " minutes" << endl;
         cout << left << setw(30) << "Departure Time: " << curr->departure_time << endl;
         cout << left << setw(30) << "Ticket Cost : "
@@ -161,10 +161,10 @@ void PaymentList::getPaymentDetails(PaymentNode *pHead, string role, string id)
         cout << left << setw(30) << "Time created : " << curr->transct_date << endl;
         cout << "==============================================================\n"
              << endl;
-        cout << "[1] Return To List\n[EDIT] to edit this purchase entry\n[DELETE] to delete this purchase history\n";
+        cout << "[R] Return\n[EDIT] to edit this purchase entry\n[DELETE] to delete this purchase history\n";
         cout << "\nMenu Selection : ";
         cin >> input;
-        if (input == "1")
+        if (input == "R")
         {
             break;
         }
@@ -200,8 +200,8 @@ void PaymentList::getAllPayments(PaymentNode *pHead, string role)
     string userMenuIn;
 
     cout << "\n======================================== TICKETS ========================================\n\n";
-    cout << left << setw(5) << "ID" << left << setw(10) << "User" << left << setw(15) << "First Name" << left << setw(15) << "Start Station" << left
-         << setw(15) << "End Station" << endl;
+    cout << left << setw(5) << "ID" << left << setw(10) << "User" << left << setw(15) << "First Name" << left << setw(15) << "Departure Station" << left
+         << setw(15) << "Destination Station" << endl;
     cout << "--------------------------------------------------\n";
 
     while (curr != NULL)
@@ -213,9 +213,9 @@ void PaymentList::getAllPayments(PaymentNode *pHead, string role)
         curr = curr->next;
     }
 
-    cout << "\nEnter the Payment ID of the ticket to view more details" << endl;
-    cout << "Enter 'ASC' to sort by first name ascendingly." << endl;
-    cout << "Enter 'R' go back previous menu." << endl;
+    cout << "\n['Payment ID'] for more details" << endl;
+    cout << "[ASC] to sort ascendingly, by first name" << endl;
+    cout << "[R] Return" << endl;
 
     cout << "=========================================================================================\n";
     // cout << "Enter the Payment ID of the ticket to view the details. Enter 'BACK' to return to menu.\nEnter 'SORT' to sort list by first name.\n";
@@ -258,8 +258,8 @@ void PaymentList::searchPayment(PaymentNode *pHead, string role, string searchBy
     string userMenuIn;
 
     cout << "\n================================= TICKETS [" << searchBy << ": " << searchValue << "] =================================\n\n";
-    cout << left << setw(5) << "ID" << left << setw(10) << "User" << left << setw(15) << "First Name" << left << setw(15) << "Start Station" << left
-         << setw(15) << "End Station" << endl;
+    cout << left << setw(5) << "ID" << left << setw(10) << "User" << left << setw(15) << "First Name" << left << setw(15) << "Departure Station" << left
+         << setw(15) << "Destination Station" << endl;
     cout << "--------------------------------------------------\n";
     while (curr != NULL)
     {
@@ -273,9 +273,9 @@ void PaymentList::searchPayment(PaymentNode *pHead, string role, string searchBy
         count++;
         curr = curr->next;
     }
-    cout << "\nEnter the Payment ID of the ticket to view more details" << endl;
-    cout << "Enter 'ASC' to sort by first name ascendingly." << endl;
-    cout << "Enter 'R' go back previous menu." << endl;
+    cout << "\n['Payment ID'] for more details" << endl;
+    cout << "[ASC] to sort ascendingly, by first name" << endl;
+    cout << "[R] Return" << endl;
 
     cout << "===========================================================================================\n";
 
@@ -316,8 +316,8 @@ void PaymentList::getPaymentDetails_asMember(PaymentNode *pHead, string searchVa
     string userMenuIn;
 
     cout << "\n================================= TICKETS [User :" << searchValue << "] =================================\n\n";
-    cout << left << setw(5) << "ID" << left << setw(10) << "User" << left << setw(15) << "Start Station" << left
-         << setw(15) << "End Station" << endl;
+    cout << left << setw(5) << "ID" << left << setw(10) << "User" << left << setw(15) << "Departure Station" << left
+         << setw(15) << "Destination Station" << endl;
     cout << "--------------------------------------------------\n";
 
     while (curr != NULL)
@@ -331,8 +331,8 @@ void PaymentList::getPaymentDetails_asMember(PaymentNode *pHead, string searchVa
         count++;
         curr = curr->next;
     }
-    cout << "\nEnter the Payment ID of the ticket to view more details" << endl;
-    cout << "Enter 'R' go back previous menu." << endl;
+    cout << "\n['Payment ID'] for more details" << endl;
+    cout << "[R] Return" << endl;
 
     cout << "===========================================================================================\n\n";
 
@@ -366,7 +366,7 @@ void PaymentList::menu_member(PaymentNode *pHead, string inp_user)
     int userMenuIn;
     cout << "\nWelcome back, " << inp_user << "." << endl;
     cout << "================== USER MAIN MENU ==================" << endl;
-    cout << "\n[1] Start New Purchase\n[2] View Transaction History\n[3] Exit system\n";
+    cout << "\n[1] Buy a Ticket\n[2] Browse Transactions\n\n[3] Exit\n";
     cout << "\n====================================================" << endl;
     cout << "\nMenu Selection :  ";
     cin >> userMenuIn;

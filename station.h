@@ -55,8 +55,6 @@ public:
     void viewStations(StationNode *head, string role);
     void viewStations(StationNode *head, string role, string direction); // overloading
 
-    // TODO:
-    //  void ViewAllStationsDirectional(StationNode *head, string direction);
     void viewStation_details(StationNode *head, string role);
 
     // calculations
@@ -69,8 +67,6 @@ public:
 
     // menu snippets
     void menu_admin(StationNode *hd);
-    // TODO:
-    //  int DisplaySelectionOfPositionsReturnCount(StationNode *head);
 
     bool checkExist_stationID(StationNode *main, string stID);
 };
@@ -169,12 +165,10 @@ double StationDLL::calc_price(StationNode *head, string direction)
     double price = 0.0;
     if (direction == "Forward")
     {
-        // if (head->dist_to_next_station == 0) { return 0; }
         price = head->dist_to_next_station * 0.1;
     }
     else if (direction == "Backward")
     {
-        // if (head->dist_to_prev_station == 0) { return 0; }
         price = head->dist_to_prev_station * 0.1;
     }
     return price;
@@ -185,12 +179,10 @@ int StationDLL::calc_time(StationNode *head, string direction)
     int time = 0;
     if (direction == "Forward")
     {
-        // if (head->dist_to_next_station == 0) { return 0; }
         time = head->dist_to_next_station - 1;
     }
     else if (direction == "Backward")
     {
-        // if (head->dist_to_prev_station == 0) { return 0; }
         time = head->dist_to_prev_station - 1;
     }
     return time;
@@ -213,7 +205,7 @@ void StationDLL::viewStations(StationNode *head, string role)
 {
     StationNode *curr = head;
 
-    // TODO:
+
     cout << "\n------------------------------------------------------" << endl;
     cout << "   __         ______     ______  " << endl;
     cout << "  /\\ \\       /\\  == \\   /\\__  _\\ " << endl;
@@ -250,7 +242,7 @@ void StationDLL::viewStations(StationNode *head, string role)
     int inp = 0;
     while (inp != 1)
     {
-        cout << "\nInput '1' to return to menu >> ";
+        cout << "\n[R] to return:  ";
         cin >> inp;
     }
     if (role == "admin")
@@ -354,7 +346,7 @@ void StationDLL::viewStation_details(StationNode *head, string role)
     {
         // Print out stationID and stationName
         cout << "\n======================== Station [" << page << "/" << size << "] ========================\n";
-        cout << "Station ID : " << curr->station_id << endl;
+        cout << "\nStation ID : " << curr->station_id << endl;
         cout << "Station Name : " << curr->station_name << endl;
         cout << "Previous Station ID : " << curr->prev_station_id << endl;
         cout << "Previous Station Name : " << curr->prev_station_name << endl;
@@ -368,8 +360,8 @@ void StationDLL::viewStation_details(StationNode *head, string role)
         cout << "Cost to next station : RM" << curr->cost_to_next_station << endl;
         cout << "\n===============================================================\n"
              << endl;
-        cout << "Next Page [1] || Previous Page [2] || Edit Current Station [3] || Return to menu [4]\n";
-        cout << "Selection >> ";
+        cout << "[1] Next Station\n[2] Previous Station\n[3] Edit Station\n\n[4] Return\n";
+        cout << "Menu Selection : ";
         cin >> input;
         if (input == 1)
         {
@@ -416,32 +408,6 @@ void StationDLL::viewStation_details(StationNode *head, string role)
     }
 }
 
-// int StationDLL::DisplaySelectionOfPositionsReturnCount(StationNode *head)
-// {
-//     StationNode *curr = head;
-//     int count = 0;
-
-//     cout << "\n*====================== POSITION ======================*\n\n";
-//     while (curr != NULL)
-//     {
-//         cout << count << "--->> " << endl;
-//         cout << "     Station ID : " << curr->station_id << " || Station Name : " << curr->station_name << endl;
-
-//         count++;
-
-//         // stops cout at last station
-//         if (curr->dist_to_next_station == 0)
-//         {
-//             cout << count << "--->> " << endl;
-//         }
-
-//         curr = curr->next;
-//     }
-//     cout << "\n*=============================================================*\n\n";
-//     cout << "Selection >> ";
-
-//     return count;
-// }
 
 void StationDLL::form_newStn_FinPos(StationNode *hd, string stID, string stName, int prevDist)
 {
@@ -458,7 +424,7 @@ void StationDLL::form_newStn_FinPos(StationNode *hd, string stID, string stName,
     cout << "4. Previous Station Name : " << curr->station_name << endl;
     cout << "5. Distance to previous station : " << prevDist;
     cout << "\n=========================================\n";
-    cout << "Type in 'CANCEL' to stop operation and return to previous page*\n\n";
+    cout << "[CANCEL] to cancel and return.\n\n";
     if (stID == "")
     {
         cout << "Enter Station ID : ";
@@ -540,7 +506,7 @@ void StationDLL::form_newStn_FstPos(StationNode *hd, string stID, string stName,
     cout << "4. Next Station Name : " << curr->station_name << endl;
     cout << "5. Distance to next station : " << nextDist;
     cout << "\n=========================================\n";
-    cout << "Type in 'CANCEL' to stop operation and return to previous page*\n\n";
+    cout << "[CANCEL] to cancel and return.\n\n";
     if (stID == "")
     {
         cout << "Enter Station ID : ";
@@ -617,43 +583,43 @@ void StationDLL::form_edtStn(StationNode *main, StationNode *curr)
     int nextTime = 0, prevTime = 0;
     double nextCost = 0, prevCost = 0;
 
-    cout << "Input new station name, replace spaces with '_' (Currently " << curr->station_name << ") : ";
+    cout << "Update station name, use UNDERSCORE as space [Original:  " << curr->station_name << "] : ";
     cin >> newStationName;
     replace(newStationName.begin(), newStationName.end(), '_', ' ');
     if (curr->time_to_prev_station != 0)
     {
-        cout << "Input new time to previous station (Currently " << curr->time_to_prev_station << " minutes) : ";
+        cout << "Update duration to previous station [Original:  " << curr->time_to_prev_station << " minutes] : ";
         cin >> prevTime;
     }
     if (curr->cost_to_prev_station != 0)
     {
-        cout << "Input new cost to previous station (Currently RM " << curr->cost_to_prev_station << ") : ";
+        cout << "Update cost to previous station [Original:  RM " << curr->cost_to_prev_station << "] : ";
         cin >> prevCost;
     }
     if (curr->time_to_next_station != 0)
     {
-        cout << "Input new time to next station (Currently " << curr->time_to_next_station << " minutes) : ";
+        cout << "Update duration to next station [Original:  " << curr->time_to_next_station << " minutes] : ";
         cin >> nextTime;
     }
     if (curr->cost_to_next_station != 0)
     {
-        cout << "Input new cost to next station (Currently RM " << curr->cost_to_next_station << ") : ";
+        cout << "Update cost to next station [Original:  RM " << curr->cost_to_next_station << "] : ";
         cin >> nextCost;
     }
 
     if (newStationName == "")
     {
-        cout << "*Input cannot be empty!\n";
+        cout << "*Station name cannot be empty!\n";
         return form_edtStn(main, curr);
     }
     if (prevTime == 0 || prevCost == 0)
     {
-        cout << "*Input cannot be empty!";
+        cout << "*Previous Station details cannot be empty!\n";
         return form_edtStn(main, curr);
     }
     if (nextTime == 0 || nextCost == 0)
     {
-        cout << "*Input cannot be empty!";
+        cout << "*Next Station details cannot be empty!\n";
         return form_edtStn(main, curr);
     }
 
@@ -673,9 +639,9 @@ void StationDLL::form_edtStn(StationNode *main, StationNode *curr)
     cout << "Time to next station : " << nextTime << " minutes" << endl;
     cout << "Cost to next station : RM" << nextCost << endl;
     cout << "\n=========================================\n";
-    cout << "Type in 'CANCEL' to stop operation and return to previous page*\n";
-    cout << "Type in 'CONFIRM' to proceed with the edit operation*\n";
-    cout << ">>";
+    cout << "[CANCEL] to cancel and return.\n";
+    cout << "[CONFIRM] to confirm.\n";
+    cout << "Input : ";
     cin >> input;
 
     if (input == "CANCEL")

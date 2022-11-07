@@ -28,7 +28,6 @@ public:
     MemberNode *tail;
     int size;
     void newUser(string username, string password, string firstName, string lastName, string role);
-    // void Enqueue(string username, string password, string firstName, string lastName, string role);
     bool deleteUser(string username);
 
     void viewMemberList();
@@ -159,7 +158,7 @@ void MemberDLL::menu_admin()
     cout << "\n=============================================================" << endl;
     cout << "\n[1] Delete Member" << endl;
     cout << "[2] Sort Member List by First Name" << endl;
-    cout << "[3] Exit" << endl;
+    cout << "\n[3] Exit" << endl;
 
     int choice;
     cout << "\nMenu Selection: " << endl;

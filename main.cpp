@@ -7,7 +7,6 @@
 #include <chrono>
 #include <thread>
 #include "station.h"
-// #include "memberQueue.h"
 #include "purchaseQueue.h"
 #include "member.h"
 
@@ -22,12 +21,11 @@ StationDLL station;
 PaymentNode *payment_head = NULL;
 PaymentList pList;
 PurchaseQueue purchase_queue(10);
-// MemberQueue q(255);
 MemberDLL memberList;
 
 void menu_adminHome(string role);
 void menu_paymentSearch_option();
-string EST(int hour, int minute, int duration);
+string estimated_time(int hour, int minute, int duration);
 
 // for initialising the data in the program (station, payment, member)
 void insertDummyData()
@@ -100,16 +98,16 @@ void insertDummyData()
     purchase_queue.enqueue("queueUser3", 2);
 }
 
-//pragma for StationList class (extra functions)
-// function:
-// 1. menu_admin
+// pragma for StationList class (extra functions)
+//  function:
+//  1. menu_admin
 #pragma region StationList
 void StationDLL::menu_admin(StationNode *hd)
 {
     int userMenuIn;
     cout << "\nHello, Admin." << endl;
     cout << "================== MAIN MENU ==================" << endl;
-    cout << "[1] Browse all stations\n[2] Browse Station Details\n[3] Add a new station\n[4] Show Payment Menu\n[5] Exit system\n";
+    cout << "\nBrowse\n--------\n[1] Browse All Stations\n[2] Browse Station Details\n\nCRUD\n--------\n[3] Add a new station\n\n[4] Exit\n";
     cout << "===============================================" << endl;
     cout << "Menu Selection:  ";
     cin >> userMenuIn;
@@ -151,10 +149,7 @@ void StationDLL::menu_admin(StationNode *hd)
 
         break; // breaking case 3
     case 4:
-        return pList.menu_admin(payment_head);
 
-        break;
-    case 5:
         cout << "Thank you, have a good day.";
         EXIT_SUCCESS;
         break;
@@ -168,9 +163,9 @@ void StationDLL::menu_admin(StationNode *hd)
 }
 #pragma endregion
 
-//pragma for MemberList class (extra functions)
-// function:
-// 1. loginUser
+// pragma for MemberList class (extra functions)
+//  function:
+//  1. loginUser
 #pragma region MemberList
 void MemberDLL::loginUser(StationNode *hd, StationDLL st)
 
@@ -197,12 +192,12 @@ void MemberDLL::loginUser(StationNode *hd, StationDLL st)
 }
 #pragma endregion
 
-//pragma for PaymentList class (extra functions)
-// functions:
-// 1. menu_admin
-// 2. menu_purchase
-// 3. menu_ticketSummary
-// 4. form_editPayment
+// pragma for PaymentList class (extra functions)
+//  functions:
+//  1. menu_admin
+//  2. menu_purchase
+//  3. menu_ticketSummary
+//  4. form_editPayment
 
 #pragma region PaymentList
 void PaymentList::menu_admin(PaymentNode *payment_head)
@@ -210,7 +205,7 @@ void PaymentList::menu_admin(PaymentNode *payment_head)
     int userMenuIn;
     cout << "\nWelcome back, Admin." << endl;
     cout << "================= PAYMENT MENU =================" << endl;
-    cout << "\n[1] Browse Payments\n[2] Search Payments List\n[3] Show Station Menu\n[4] Exit system\n";
+    cout << "\nBrowse\n--------\n[1] Browse Payments\n[2] Search Payments List\n\n[3] Exit\n";
     cout << "\n================================================" << endl;
     cout << "\nMenu Selection:  ";
     cin >> userMenuIn;
@@ -267,9 +262,7 @@ void PaymentList::menu_admin(PaymentNode *payment_head)
         }
         break;
     case 3:
-        station.menu_admin(head);
-        break;
-    case 4:
+
         cout << "Thank you, have a good day.";
         EXIT_SUCCESS;
         break;
@@ -287,7 +280,7 @@ void PaymentList::menu_purchase(PaymentNode *hd, string usr)
     string direction, start_stationID, endStID;
     bool valid;
 
-    cout << "\nWhich direction are you headed?" << endl;
+    cout << "\nSelect a route" << endl;
     cout << "=========================== MAIN MENU ===========================" << endl;
     cout << "\n[1] Titiwangsa -> Chan Sow Lin\n[2] Chan Sow Lin -> Titiwangsa\n[3] Cancel\n";
     cout << "\n=================================================================" << endl;
@@ -303,7 +296,7 @@ void PaymentList::menu_purchase(PaymentNode *hd, string usr)
         direction = "Backward";
         break;
 
-    case 3:
+    case 3: 
         return menu_member(hd, usr);
 
     default:
@@ -315,7 +308,7 @@ void PaymentList::menu_purchase(PaymentNode *hd, string usr)
     station.viewStations(head, "member", direction);
 
     // enter start station ID
-    cout << "Enter the starting Station ID >> ";
+    cout << "Select your departure station (exp: SS02): ";
     cin >> start_stationID;
     valid = station.checkExist_stationID(head, start_stationID);
     if (!valid)
@@ -323,8 +316,8 @@ void PaymentList::menu_purchase(PaymentNode *hd, string usr)
         cout << "Invalid Station ID!";
         return menu_purchase(hd, usr);
     }
-    // enter end station ID
-    cout << "Enter the ending Station ID >> ";
+    // enter destination station ID
+    cout << "Select your destination station (exp: SS04): ";
     cin >> endStID;
     valid = station.checkExist_stationID(head, endStID);
     if (!valid)
@@ -383,10 +376,10 @@ void PaymentList::menu_ticketSummary(PaymentNode *payment_head, string usr, stri
     }
     cout << "\nReview Station Selection and Details Below";
     cout << "\n======================== Purchase Details ========================\n";
-    cout << left << setw(30) << "Start Station ID : " << start_stationID << endl;
-    cout << left << setw(30) << "Start Station Name : " << startName << endl;
-    cout << left << setw(30) << "End Station ID : " << endStID << endl;
-    cout << left << setw(30) << "End Station Name : " << endName << endl;
+    cout << left << setw(30) << "Departure Station ID : " << start_stationID << endl;
+    cout << left << setw(30) << "Departure Station Name : " << startName << endl;
+    cout << left << setw(30) << "Destination Station ID : " << endStID << endl;
+    cout << left << setw(30) << "Destination Station Name : " << endName << endl;
     cout << left << setw(30) << "Estimated Travel Duration : " << dur << " minutes" << endl;
     cout << left << setw(30) << "Ticket Cost : "
          << "RM " << cost << endl;
@@ -424,10 +417,10 @@ void PaymentList::menu_ticketSummary(PaymentNode *payment_head, string usr, stri
     cout << left << setw(30) << "First Name : " << first << endl;
     cout << left << setw(30) << "Last Name : " << last << endl;
     cout << left << setw(30) << "Identification Number : " << id << endl;
-    cout << left << setw(30) << "Start Station ID : " << start_stationID << endl;
-    cout << left << setw(30) << "Start Station Name : " << startName << endl;
-    cout << left << setw(30) << "End Station ID : " << endStID << endl;
-    cout << left << setw(30) << "End Station Name : " << endName << endl;
+    cout << left << setw(30) << "Departure Station ID : " << start_stationID << endl;
+    cout << left << setw(30) << "Departure Station Name : " << startName << endl;
+    cout << left << setw(30) << "Destination Station ID : " << endStID << endl;
+    cout << left << setw(30) << "Destination Station Name : " << endName << endl;
     cout << left << setw(30) << "Estimated Travel Duration : " << dur << " minutes" << endl;
     cout << left << setw(30) << "Departure Time: " << dept << endl;
     cout << left << setw(30) << "Ticket Cost : "
@@ -494,7 +487,7 @@ void PaymentList::form_editPayment(PaymentNode *hd, PaymentNode *curr)
         direction = "Backward";
     }
 
-    cout << "Input new starting station ID, replace spaces with '_' (Currently " << curr->departure_stn_id << ") : ";
+    cout << "Update starting station ID, use UNDERSCORE as space [Original:  " << curr->departure_stn_id << "] : ";
     cin >> newStartID;
     replace(newStartID.begin(), newStartID.end(), '_', ' ');
 
@@ -516,7 +509,7 @@ void PaymentList::form_editPayment(PaymentNode *hd, PaymentNode *curr)
     // reset currNew list
     currNew = head;
 
-    cout << "Input new ending station ID, replace spaces with '_' (Currently " << curr->destination_stn_id << ") : ";
+    cout << "Update ending station ID, use UNDERSCORE as space [Original:  " << curr->destination_stn_id << "] : ";
     cin >> newEndID;
     replace(newEndID.begin(), newEndID.end(), '_', ' ');
 
@@ -533,9 +526,9 @@ void PaymentList::form_editPayment(PaymentNode *hd, PaymentNode *curr)
 
     // declare new vars for new starting name
     string newEndName = currNew->station_name;
-    cout << "\nNew end station is " << newEndID << ", " << newEndName << endl;
+    cout << "\nNew destination station is " << newEndID << ", " << newEndName << endl;
 
-    cout << "Input new departure time (Currently " << curr->departure_time << ") : ";
+    cout << "Update departure time [Original:  " << curr->departure_time << "] : ";
     cin >> newDeparture;
 
     newCost = station.calc_travel_cost(head, newStartID, newEndID, direction);
@@ -558,10 +551,10 @@ void PaymentList::form_editPayment(PaymentNode *hd, PaymentNode *curr)
     cout << left << setw(30) << "First Name : " << curr->f_name << endl;
     cout << left << setw(30) << "Last Name : " << curr->l_name << endl;
     cout << left << setw(30) << "ID No. : " << curr->ic_no << endl;
-    cout << left << setw(30) << "Start Station ID : " << newStartID << endl;
-    cout << left << setw(30) << "Start Station Name : " << newStartName << endl;
-    cout << left << setw(30) << "End Station ID : " << newEndID << endl;
-    cout << left << setw(30) << "End Station Name : " << newEndName << endl;
+    cout << left << setw(30) << "Departure Station ID : " << newStartID << endl;
+    cout << left << setw(30) << "Departure Station Name : " << newStartName << endl;
+    cout << left << setw(30) << "Destination Station ID : " << newEndID << endl;
+    cout << left << setw(30) << "Destination Station Name : " << newEndName << endl;
     cout << left << setw(30) << "Estimated Travel Duration : " << newDuration << " minutes" << endl;
     cout << left << setw(30) << "Departure Time: " << newDeparture << endl;
     cout << left << setw(30) << "Ticket Cost : "
@@ -585,16 +578,15 @@ void PaymentList::form_editPayment(PaymentNode *hd, PaymentNode *curr)
 }
 #pragma endregion
 
-
-//pragma for non-member functions
-// functions:
-// 1. loginHome
-// 2. menu_adminHome
-// 3. menu_paymentSearch_option
+// pragma for non-member functions
+//  functions:
+//  1. loginHome
+//  2. menu_adminHome
+//  3. menu_paymentSearch_option
 #pragma region non - member methods
 void loginHome(MemberDLL memberList, StationNode *hd, StationDLL st)
 {
-    string userMenuIn;
+    string userMenuIn, userMainMenuIn, adminMenuIn, memberMenuIn;
 
     cout << "\n------------------------------------------------------" << endl;
     cout << "   __         ______     ______  " << endl;
@@ -606,15 +598,18 @@ void loginHome(MemberDLL memberList, StationNode *hd, StationDLL st)
     cout << "\n------------------------------------------------------" << endl;
 
     cout << "\n=====================  MAIN MENU  ====================" << endl;
-    cout << "\n[1] Login \n[2] Register New User\n[3] Exit" << endl;
+    cout << "\n[1] Admin \n[2] Member\n\n[3] Exit" << endl;
     cout << "\n======================================================" << endl;
     cout << "\nMenu Selection:  ";
-    cin >> userMenuIn;
-    int menuInt = 0;
+    cin >> userMainMenuIn;
+
+    int mainMenuInt = 0;
+    int adminMenuInt = 0;
+    int memberMenuInt = 0;
 
     try
     {
-        menuInt = stoi(userMenuIn);
+        mainMenuInt = stoi(userMainMenuIn);
     }
     catch (const std::exception &e)
     {
@@ -623,14 +618,98 @@ void loginHome(MemberDLL memberList, StationNode *hd, StationDLL st)
         // return loginHome(q, hd, st);
         return loginHome(memberList, hd, st);
     }
-    switch (menuInt)
+    switch (mainMenuInt)
     {
-    case 1: // login selected
-        return memberList.loginUser(hd, st);
+    case 1: // admin selected
+        cout << "\n------------------------------------------------------" << endl;
+        cout << "   __         ______     ______  " << endl;
+        cout << "  /\\ \\       /\\  == \\   /\\__  _\\ " << endl;
+        cout << "  \\ \\ \\____  \\ \\  __<   \\/_/\\ \\/ " << endl;
+        cout << "   \\ \\_____\\  \\ \\_\\ \\_\\    \\ \\_\\ " << endl;
+        cout << "    \\/_____/   \\/_/ /_/     \\/_/    KUALA LUMPUR " << endl;
+        cout << "\n\n               Ticket Purchasing System" << endl;
+        cout << "\n------------------------------------------------------" << endl;
+
+        cout << "\n=====================  MAIN MENU  ====================" << endl;
+        cout << "\n[1] Login \n[2] Register New User\n\n[3] Return" << endl;
+        cout << "\n======================================================" << endl;
+        cout << "\nMenu Selection:  ";
+        cin >> adminMenuIn;
+
+        try
+        {
+            adminMenuInt = stoi(adminMenuIn);
+        }
+        catch (const std::exception &e)
+        {
+            // std::cerr << e.what() << '\n';
+            cout << "Error converting string to int, please enter whole numbers\n";
+            // return loginHome(q, hd, st);
+            return loginHome(memberList, hd, st);
+        }
+        switch (adminMenuInt)
+        {
+        case 1: // login selected
+            return memberList.loginUser(hd, st);
+
+            break;
+        case 2: // register selected
+            memberList.registerUser(hd, st);
+
+            break;
+        case 3:
+            return loginHome(memberList, hd, st);
+
+            break;
+        default:
+            cout << "\nMenu not found, try again.\n";
+            return loginHome(memberList, hd, st);
+            break;
+        }
 
         break;
-    case 2: // register selected
-        memberList.registerUser(hd, st);
+    case 2: // member selected
+        cout << "\n------------------------------------------------------" << endl;
+        cout << "   __         ______     ______  " << endl;
+        cout << "  /\\ \\       /\\  == \\   /\\__  _\\ " << endl;
+        cout << "  \\ \\ \\____  \\ \\  __<   \\/_/\\ \\/ " << endl;
+        cout << "   \\ \\_____\\  \\ \\_\\ \\_\\    \\ \\_\\ " << endl;
+        cout << "    \\/_____/   \\/_/ /_/     \\/_/    KUALA LUMPUR " << endl;
+        cout << "\n\n               Ticket Purchasing System" << endl;
+        cout << "\n------------------------------------------------------" << endl;
+
+        cout << "\n=====================  MAIN MENU  ====================" << endl;
+        cout << "\n[1] Login \n\n[2] Return" << endl;
+        cout << "\n======================================================" << endl;
+        cout << "\nMenu Selection:  ";
+        cin >> memberMenuIn;
+
+        try
+        {
+            memberMenuInt = stoi(memberMenuIn);
+        }
+        catch (const std::exception &e)
+        {
+            // std::cerr << e.what() << '\n';
+            cout << "Error converting string to int, please enter whole numbers\n";
+            // return loginHome(q, hd, st);
+            return loginHome(memberList, hd, st);
+        }
+        switch (memberMenuInt)
+        {
+        case 1: // login selected
+            return memberList.loginUser(hd, st);
+
+            break;
+        case 2:
+            return loginHome(memberList, hd, st);
+
+            break;
+        default:
+            cout << "\nMenu not found, try again.\n";
+            return loginHome(memberList, hd, st);
+            break;
+        }
 
         break;
     case 3:
@@ -687,7 +766,7 @@ void menu_adminHome(string role)
 void menu_paymentSearch_option()
 {
     cout << "================= Search Option ==================" << endl;
-    cout << "[1] Username\n[2] First Name\n[3] Last Name\n[4] Start Station\n[5] End Station\n[6] Back" << endl;
+    cout << "[1] Username\n[2] First Name\n[3] Last Name\n[4] Departure Station \n[5] Destination Station\n\n[6] Return" << endl;
     cout << "==================================================" << endl;
     cout << "Menu Selection:  ";
 }
