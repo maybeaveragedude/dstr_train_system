@@ -239,8 +239,8 @@ void StationDLL::viewStations(StationNode *head, string role)
         // Set current node to next node and repeat loop
         curr = curr->next;
     }
-    int inp = 0;
-    while (inp != 1)
+    string inp = "";
+    while (inp != "R")
     {
         cout << "\n[R] to return:  ";
         cin >> inp;
@@ -417,13 +417,13 @@ void StationDLL::form_newStn_FinPos(StationNode *hd, string stID, string stName,
         curr = curr->next;
 
     // Form
-    cout << "\n==============INSERT AT END==============\n";
-    cout << "1. Station ID : " << stID << endl;
-    cout << "2. Station Name : " << stName << endl;
-    cout << "3. Previous Station ID : " << curr->station_id << endl;
-    cout << "4. Previous Station Name : " << curr->station_name << endl;
-    cout << "5. Distance to previous station : " << prevDist;
-    cout << "\n=========================================\n";
+    cout << "\n============== INSERT AT END ==============\n";
+    cout << "[1] Station ID : " << stID << endl;
+    cout << "[2] Station Name : " << stName << endl;
+    cout << "[3] Previous Station ID : " << curr->station_id << endl;
+    cout << "[4] Previous Station Name : " << curr->station_name << endl;
+    cout << "[5] Distance to previous station : " << prevDist;
+    cout << "\n===========================================\n";
     cout << "[CANCEL] to cancel and return.\n\n";
     if (stID == "")
     {
@@ -499,13 +499,13 @@ void StationDLL::form_newStn_FstPos(StationNode *hd, string stID, string stName,
     StationNode *curr = hd;
 
     // Form
-    cout << "\n=============INSERT AT FRONT=============\n";
-    cout << "1. Station ID : " << stID << endl;
-    cout << "2. Station Name : " << stName << endl;
-    cout << "3. Next Station ID : " << curr->station_id << endl;
-    cout << "4. Next Station Name : " << curr->station_name << endl;
-    cout << "5. Distance to next station : " << nextDist;
-    cout << "\n=========================================\n";
+    cout << "\n============= INSERT AT FRONT =============\n";
+    cout << "[1] Station ID : " << stID << endl;
+    cout << "[2] Station Name : " << stName << endl;
+    cout << "[3] Next Station ID : " << curr->station_id << endl;
+    cout << "[4] Next Station Name : " << curr->station_name << endl;
+    cout << "[5] Distance to next station : " << nextDist;
+    cout << "\n===========================================\n";
     cout << "[CANCEL] to cancel and return.\n\n";
     if (stID == "")
     {
